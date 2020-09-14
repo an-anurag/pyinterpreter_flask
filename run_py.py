@@ -22,7 +22,8 @@ class RunPyCode:
         filename = "./output/prog.py"
         if not code:
             code = self.code
-        with open(filename, "w") as f:
-            f.write(code)
+        else:
+            with open(filename, "w") as f:
+                f.write(code)
         self._run_py_prog(filename, command_args)
         return self.stderr, self.stdout

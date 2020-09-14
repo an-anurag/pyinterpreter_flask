@@ -1,3 +1,1 @@
-import sys
-for i in sys.argv:
-    print(i)
+print([x for x in range(50)])
