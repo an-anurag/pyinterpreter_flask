@@ -5,7 +5,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 
-from flask import Flask, request, render_template, Response
+from flask import Flask, request, render_template, Response, jsonify
 
 from run_py import RunPyCode
 
@@ -33,14 +33,18 @@ def create_figure():
 def run_py():
 
     if request.method == 'POST':
-        code = request.form['code_area']
-        command_args = request.form['input_area']
+        code = request.form['code']
         code_obj = RunPyCode()
-        error, output = code_obj.run_py_code(code, command_args=command_args)
-        return render_template('index.html', error=error, output=output)
+        error, output = code_obj.run_py_code(code)
+        return jsonify({'output': output, 'error': error})
 
     else:
         return render_template('index.html')
+
+
+@app.route('/skulpt', methods=['GET', 'POST'])
+def home2():
+    return render_template('skulpt.html')
 
 
 if __name__ == '__main__':

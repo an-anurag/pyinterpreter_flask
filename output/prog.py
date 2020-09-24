@@ -1,1 +1,2 @@
-print([x for x in range(50)])
+# Write code below
+pri

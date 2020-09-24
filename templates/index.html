@@ -14,54 +14,84 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
+            integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
+            crossorigin="anonymous"></script>
     <title>PyCompiler</title>
+    <style type="text/css" media="screen">
+        #editor {
+            position: absolute;
+            top: 100px;
+            right: 700px;
+            bottom: 100px;
+            left: 130px;
+        }
+
+        #output {
+            position: absolute;
+            top: 100px;
+            right: 100px;
+            bottom: 100px;
+            left: 700px;
+            border: 1px solid grey;
+            width: 500px;
+
+        }
+
+        #error {
+            position: absolute;
+            top: 600px;
+            right: 100px;
+            bottom: 100px;
+            left: 130px;
+            border: 1px solid grey;
+            width: 500px;
+            color: red;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <h1>PyCompiler</h1>
+    <form action="/" method="POST" id="runCode">
+        <input type="submit" value="Run">
+    </form>
+    <textarea class="form-control" id="output" disabled></textarea>
+    <p id="error"></p>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12 ml-5 mr-5 mt-5 mb-5">
-
-            <form action="/" method="post">
-                <div class="form-group row">
-                    <div class="col-sm-7 mr-5 ml-3">
-                        <label for="comment"><h4>Code here</h4></label>
-                        <textarea class="form-control" rows="14" name="code_area" value=""
-                                  style="border:1px solid grey; letter-spacing: 1px; font-family: 'Lucida Console'; font-size: 20px;"></textarea>
-                    </div>
-
-                    {% if error %}
-                    <div>
-                        <p>{{ error }}</p>
-                    </div>
-                    {% endif %}
-
-
-                    <div class="col-sm-3">
-                        <div class="row mb-4">
-                            <label for="comment"><h5>Input</h5></label>
-                            <textarea class="form-control" rows="7" name="input_area"
-                                      style="border:1px solid grey;"></textarea>
-                        </div>
-                        <div class="row">
-                            <label for="comment"><h5>Output</h5></label>
-                            <textarea class="form-control" rows="7" name="output_area" style="border:1px solid grey;"
-                                      disabled>{% if output %}{{ output }}{% endif %}</textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-7 ml-3">
-                        <span>
-                        <a class="btn btn-primary" href="/plot.png">View chart</a>
-                        <button class="btn btn-primary float-right" type="submit">Run Your Code</button>
-                        </span>
-
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
+
+<div id="editor"># Write code below</div>
+
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+    // handle form with ajax
+    $("#runCode").submit(function (event) {
+
+        // stop form from submitting normally
+        event.preventDefault();
+        //get values
+        var code = editor.getValue();
+        $.ajax({
+            type: 'POST',
+            url: "{{url_for('run_py')}}",
+            data: {'code': code},
+            success: function (response) {
+                var error = response["error"];
+                var result = response["output"];
+                console.log(error, result)
+                if (result) {
+                    $("#output").val(result);
+                } else {
+                    $("#error").html(error);
+                }
+
+            }
+        })
+    })
+
+</script>
 </body>
 </html>

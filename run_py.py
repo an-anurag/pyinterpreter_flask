@@ -11,7 +11,7 @@ class RunPyCode:
             os.mkdir('output')
 
     def _run_py_prog(self, cmd="prog.py", args=None):
-        cmd = [sys.executable, cmd, args]
+        cmd = [sys.executable, cmd]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         result = p.wait()
         a, b = p.communicate()
