@@ -1,0 +1,29 @@
+#editor {
+    position: absolute;
+    top: 100px;
+    right: 700px;
+    bottom: 100px;
+    left: 130px;
+}
+
+#output {
+    position: absolute;
+    top: 100px;
+    right: 100px;
+    bottom: 100px;
+    left: 700px;
+    border: 1px solid grey;
+    width: 500px;
+
+}
+
+#error {
+    position: absolute;
+    top: 600px;
+    right: 100px;
+    bottom: 100px;
+    left: 130px;
+    border: 1px solid grey;
+    width: 500px;
+    color: red;
+}
