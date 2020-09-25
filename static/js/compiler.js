@@ -4,7 +4,7 @@ $(document).ready(function () {
         var code = editor.getValue();
         $.ajax({
             type: 'POST',
-            url: "{{ url_for('home') }}",
+            url: "/",
             data: {'code': code},
             success: function (response) {
                 var error = response["error"];

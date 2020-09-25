@@ -1,11 +1,4 @@
-
-import io
-import random
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
-
-
-from flask import Flask, request, render_template, Response, jsonify
+from flask import Flask, request, render_template, jsonify
 
 from run_py import RunPyCode
 
@@ -19,7 +12,6 @@ def home():
         code = request.form['code']
         code_obj = RunPyCode()
         error, output = code_obj.run_py_code(code)
-        print(output)
         return jsonify({'output': output, 'error': error})
 
     else:
