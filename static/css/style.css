@@ -1,29 +1,22 @@
 #editor {
-    position: absolute;
-    top: 100px;
-    right: 700px;
-    bottom: 100px;
-    left: 130px;
+    /*position: absolute;*/
+    top: 25px;
+    /*right: 700px;*/
+    /*bottom: 100px;*/
+    /*left: 130px;*/
+    height: 400px;
 }
 
 #output {
-    position: absolute;
-    top: 100px;
-    right: 100px;
-    bottom: 100px;
-    left: 700px;
-    border: 1px solid grey;
-    width: 500px;
-
+    /*position: absolute;*/
+    top: 25px;
+    /*right: 100px;*/
+    /*bottom: 100px;*/
+    /*left: 700px;*/
+    /*border: 1px solid grey;*/
+    height: 400px;
 }
 
 #error {
-    position: absolute;
     top: 600px;
-    right: 100px;
-    bottom: 100px;
-    left: 130px;
-    border: 1px solid grey;
-    width: 500px;
-    color: red;
 }
