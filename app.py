@@ -1,5 +1,4 @@
-import json
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template
 
 from run_py import RunPyCode
 
@@ -9,7 +8,6 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     """
-
     import matplotlib.pyplot as plt
 
     labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
@@ -24,18 +22,17 @@ def home():
     :return:
     """
     if request.method == 'POST':
-        code = request.form['code']
-
+        code = request.form['editor']
         if 'matplotlib' in code:
             code = "import mpld3\n" + code + "\nmpld3.save_json(fig, fileobj='json_fig.json')"
             code_obj = RunPyCode()
             error, output = code_obj.run_py_code(code)
-            json_fig = json.dumps(open('json_fig.json', 'r').read())
-            return jsonify({'output': output, 'error': error, 'figure': json_fig})
+            json_fig = open('json_fig.json', 'r').read()
+            return render_template('index.html', output=output, error=error, is_chart=True, chart=json_fig)
 
         code_obj = RunPyCode()
         error, output = code_obj.run_py_code(code)
-        return jsonify({'output': output, 'error': error, 'is_chart': None})
+        return render_template('index.html', output=output, error=error, is_chart=False)
 
     else:
         return render_template('index.html')
