@@ -20,27 +20,33 @@
 
     <form action="/" method="POST" id="codeForm">
         <div class="row m-auto">
-            <div class="col-5 m-auto" id="editor"># Your code here</div>
+            <div class="col-5 m-auto" id="editor">{% if code %}{{ code }}{% else %}# your code here{% endif %}</div>
             <textarea name="editor" hidden></textarea>
 
             {% if is_chart %}
-                <div class="figure col-5 m-auto" id="fig01"></div>
-                <script>
+
+            <div class="figure col-5 m-auto" id="fig01"></div>
+            <script>
                     var json_fig = {{ chart|tojson }}
                     var val_json = JSON.parse(json_fig)
                     mpld3.draw_figure("fig01", val_json)
-                </script>
+            </script>
             {% else %}
-                <textarea class="col-5 m-auto" id="output" disabled>{{ output }}</textarea>
+            <textarea class="col-5 m-auto" id="output" disabled>{{ output }}</textarea>
             {% endif %}
         </div>
-        <input class="btn btn-primary" type="submit" value="Run" id="runCode" form="codeForm">
+        <br>
+        <br>
+        <div>
+            <input class="btn btn-primary" type="submit" value="Run" id="runCode">
+            <input class="btn btn-success" value="Clear" id="clearOutput">
+        </div>
+
     </form>
 
-    <input class="btn btn-success" value="Clear" id="clearOutput">
     <hr>
     {% if error %}
-        <p id="error" style="color: red">{{ error }}</p>
+    <p id="error" style="color: red">{{ error }}</p>
     {% endif %}
 
 
@@ -58,8 +64,15 @@
     editor.session.setMode("ace/mode/python");
 
     $("#codeForm").submit(function () {
+        var code = editor.getValue()
         var textarea = $('textarea[name="editor"]');
-        textarea.val(editor.getValue());
+        textarea.val(code);
+    })
+
+    $("#clearOutput").click(function (){
+    editor.setValue("# your code here");
+    var outputWindow = $("#output");
+    outputWindow.val("");
     })
 
 </script>

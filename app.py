@@ -28,11 +28,11 @@ def home():
             code_obj = RunPyCode()
             error, output = code_obj.run_py_code(code)
             json_fig = open('json_fig.json', 'r').read()
-            return render_template('index.html', output=output, error=error, is_chart=True, chart=json_fig)
+            return render_template('index.html', output=output, error=error, is_chart=True, chart=json_fig, code=code)
 
         code_obj = RunPyCode()
         error, output = code_obj.run_py_code(code)
-        return render_template('index.html', output=output, error=error, is_chart=False)
+        return render_template('index.html', output=output, error=error, is_chart=False, code=code)
 
     else:
         return render_template('index.html')
