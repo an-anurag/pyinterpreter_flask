@@ -23,13 +23,20 @@ def home():
     """
     if request.method == 'POST':
         code = request.form['editor']
+
+        # matplotlib graph handler
         if 'matplotlib' in code:
-            code = "import mpld3\n" + code + "\nmpld3.save_json(fig, fileobj='json_fig.json')"
+            updated_code = "import mpld3\n" + code + "\nmpld3.save_json(fig, fileobj='json_fig.json')"
             code_obj = RunPyCode()
-            error, output = code_obj.run_py_code(code)
-            json_fig = open('json_fig.json', 'r').read()
+            error, output = code_obj.run_py_code(updated_code)
+            # read json from file
+            with open('json_fig.json', 'r') as json_fig_file:
+                json_fig = json_fig_file.read()
+            # flush the json file
+            open('json_fig.json', 'w').close()
             return render_template('index.html', output=output, error=error, is_chart=True, chart=json_fig, code=code)
 
+        # normal python code handler
         code_obj = RunPyCode()
         error, output = code_obj.run_py_code(code)
         return render_template('index.html', output=output, error=error, is_chart=False, code=code)
